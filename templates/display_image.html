@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <title>{{ file_name }}</title>
+</head>
+  <section style="min-width: 1200;">
+    <img src="{{ image_path }}" alt="Uploaded image">
+    <p>Uploaded at: {{ formatted_time }}</p>
+  </section>
+<style>
+img{
+    width:100%;
+    height:100%;
+    max-width:90vw;
+    max-height:80vh;
+}
+</style>
+{% endblock %}

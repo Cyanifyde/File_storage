@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <title>upload</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/compress.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ffmpeg.js/3.1.9001/ffmpeg.min.js"></script>
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <div class="card">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification ">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+          <div class="card-header">
+            <p class="card-header-title">
+              Upload File
+            </p>
+          </div>
+          <div class="card-content">
+            <form action="/upload" method="POST" enctype="multipart/form-data" onsubmit="return compressAndUpload(event);">
+              <div class="field">
+                <label class="label">Choose a file:</label>
+                <div class="control">
+                  <input class="input" type="file" name="file" id="file" accept=".png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.txt,.json,.css,.mp4,.avi">
+                </div>
+              </div>
+              <button class="button is-primary" id="upload-button" type="submit">Upload</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  async function compressAndUpload(e) {
+    e.preventDefault();
+    const fileInput = document.getElementById('file');
+    const file = fileInput.files[0];
+    if (['.png', '.jpg', '.jpeg', '.gif'].includes(file.name.slice(-4).toLowerCase())) {
+      const compress = new Compress();
+      const compressedImages = await compress.compress([file], { size: 0.8, quality: 0.75 });
+      const { photo } = compressedImages[0];
+      const compressedFile = Compress.convertBase64ToFile(photo.data, photo.ext);
+      uploadFile(compressedFile);
+    } else if (['.mp4', '.avi'].includes(file.name.slice(-4).toLowerCase())) {
+      const compressedFile = await compressVideo(file);
+      uploadFile(compressedFile);
+    } else {
+      uploadFile(file);
+    }
+  }
+  async function compressVideo(file) {
+    const { createFFmpeg, fetchFile } = FFmpeg;
+    const ffmpeg = createFFmpeg({ log: true });
+    await ffmpeg.load();
+    
+    ffmpeg.FS('writeFile', file.name, await fetchFile(file));
+    
+    // Change the options as needed
+    await ffmpeg.run('-i', file.name, '-c:v', 'libx264', '-crf', '28', 'output.mp4');
+    
+    const data = ffmpeg.FS('readFile', 'output.mp4');
+    const compressedFile = new File([data.buffer], 'output.mp4', { type: 'video/mp4' });
+    return compressedFile;
+  }
+
+  function uploadFile(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    fetch('/upload', {
+      method: 'POST',
+      body: formData
+    })}}
+</script>
+{% endblock %}

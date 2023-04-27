@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <title>{{ file_name }}</title>
+</head>
+  <section>
+   <embed src="{{ pdf_path }}"  type="application/pdf" allowfullscreen>
+    <p>Uploaded at: {{ formatted_time }}</p></embed>
+  </section>
+<style>
+    embed{
+        min-width:75vw;min-height:85vh;
+        max-height:75vw;mx-height:100vh;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <title>{{ file_name }}</title>
+</head>
+  <section>
+    <video controls width="100%" height="600px">
+      <source src="{{ video_path }}" type="video/mp4">
+      <source src="{{ video_path }}" type="video/avi">
+      Your browser does not support the video tag.
+    </video>
+    <p>Uploaded at: {{ formatted_time }}</p>
+  </section>
+{% endblock %}

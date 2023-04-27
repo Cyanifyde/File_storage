@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <title>{{ file_name }}</title>
+</head>
+  <section>
+    <pre style="white-space: pre-wrap; word-wrap: break-word;">{{ css }}</pre>
+    <p>Uploaded at: {{ formatted_time }}</p>
+  </section>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <title>profile</title>
+</head>
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column ">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              Change Your Password
+            </p>
+          </header>
+          <div class="card-content">
+            <form method="POST" action="/change_password" autocomplete="off">
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  <div class="notification">
+                    {{ messages[0] }}
+                  </div>
+                {% endif %}
+              {% endwith %}
+              <div class="field">
+                <label class="label">Old Password</label>
+                <div class="control">
+                  <input class="input" type="password" name="old-password" autocomplete="off" placeholder="Old Password">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">New Password</label>
+                <div class="control">
+                  <input class="input" type="password" name="new-password" autocomplete="off" placeholder="New Password">
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <button class="button is-primary is-fullwidth">Change Password</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

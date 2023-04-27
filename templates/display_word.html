@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <title>{{ file_name }}</title>
+</head>
+  <section style="min-width: 1200px;">
+    <iframe src="{{ word_path }}" width="1200px" height="600px"></iframe>
+    <p>Uploaded at: {{ formatted_time }}</p>
+  </section>
+{% endblock %}

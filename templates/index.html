@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <title>file holding</title>
+</head>
+<h1 class="title">
+    {% if name=="" or name==None%}
+        Welcome
+    {% else %}
+        Welcome, {{ name }}!
+    {% endif %}
+</h1>
+{% endblock %}
